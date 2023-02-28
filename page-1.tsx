@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { Nav } from './nav';
-import { useForm } from 'react-hook-form';
+import { Controller, useForm } from 'react-hook-form';
 
 export function Page1() {
   return (
@@ -24,8 +24,11 @@ function BasicForm() {
     register,
     handleSubmit,
     watch,
+    control,
     formState: { errors },
-  } = useForm<FormProps>();
+  } = useForm<FormProps>({
+    defaultValues: { firstname: 'Bob', lastname: 'Anderson' },
+  });
 
   const onSubmit = (data: FormProps) => console.log(data);
 
@@ -36,10 +39,12 @@ function BasicForm() {
       <form onSubmit={handleSubmit(onSubmit)}>
         {/* register your input into the hook by invoking the "register" function */}
         <div>
-          <div>
-            <label>Firstname</label>
-          </div>
-          <input {...register('firstname')} />
+          <Controller
+            name="firstname"
+            control={control}
+            rules={{ required: true }}
+            render={({ field }) => <input {...field} />}
+          />
         </div>
 
         {/* include validation with required or other standard HTML validation rules */}
