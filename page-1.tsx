@@ -8,36 +8,60 @@ export function Page1() {
       <Nav />
       <div style={{ display: 'flex', justifyContent: 'center' }}>
         <h1 style={{ color: 'white' }}>Basic Form</h1>
-
-        <BasicForm />
       </div>
+      <BasicForm />
     </div>
   );
 }
 
 function BasicForm() {
+  type FormProps = {
+    firstname: string;
+    lastname: string;
+  };
+
   const {
     register,
     handleSubmit,
     watch,
     formState: { errors },
-  } = useForm();
-  const onSubmit = (data) => console.log(data);
+  } = useForm<FormProps>();
 
-  console.log(watch('example')); // watch input value by passing the name of it
+  const onSubmit = (data: FormProps) => console.log(data);
+
+  console.log(watch('firstname')); // watch input value by passing the name of it
 
   return (
-    /* "handleSubmit" will validate your inputs before invoking "onSubmit" */
-    <form onSubmit={handleSubmit(onSubmit)}>
-      {/* register your input into the hook by invoking the "register" function */}
-      <input defaultValue="test" {...register('example')} />
+    <div style={{ display: 'flex', justifyContent: 'center' }}>
+      <form onSubmit={handleSubmit(onSubmit)}>
+        {/* register your input into the hook by invoking the "register" function */}
+        <div>
+          <div>
+            <label>Firstname</label>
+          </div>
+          <input {...register('firstname')} />
+        </div>
 
-      {/* include validation with required or other standard HTML validation rules */}
-      <input {...register('exampleRequired', { required: true })} />
-      {/* errors will return when field validation fails  */}
-      {errors.exampleRequired && <span>This field is required</span>}
+        {/* include validation with required or other standard HTML validation rules */}
+        <div style={{ marginTop: '20px' }}>
+          <div>
+            <label>Lastname</label>
+          </div>
+          <input {...register('lastname', { required: true })} />
+        </div>
+        {/* errors will return when field validation fails  */}
+        {errors.lastname && <span>This field is required</span>}
 
-      <input type="submit" />
-    </form>
+        <div
+          style={{
+            display: 'flex',
+            justifyContent: 'center',
+            marginTop: '20px',
+          }}
+        >
+          <input style={{ color: 'black' }} type="submit" />
+        </div>
+      </form>
+    </div>
   );
 }
